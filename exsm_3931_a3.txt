@@ -1,0 +1,119 @@
+#########################################################################
+# Pseudo code for Hungry Customer
+# assumption - the hungry customer already knows which snack they want
+# Assumption - snacks are selected by a 4 character alpha code
+# 1. select the snack by entering a code
+# 2. Receive payment
+# 3. Return change
+#########################################################################
+price = 0
+payment = 0
+
+FUNCTION checkSnackCode(snackCode){
+    if the snackCode exists in the database return True
+    else return False
+}
+
+FUNCTION price(snackCode) {
+    # lookup the snackcode in a database of some sort
+    price = snackCode.price
+    return price
+}
+
+FUNCTION receivePayment(price){
+change = 0
+paymentComplete = False
+    while payment <= price {
+        payment = payment + coin.value
+        if cancel button is pressed {
+            change = payment
+            reset payment to 0
+            return (paymentComplete, change) # paymentComplete will be False
+            exit loop
+        }
+    }
+    paymentComplete = True
+    if payment > price {
+        change = payment - price
+    }
+    return (paymentComplete, change)
+}
+
+FUNCTION vendSnack(snackCode){
+    activate mechanism to vend the correct snack based on the snackCode
+    if snackSuccessFullyVended {
+        return True
+    else {
+        return False
+    }
+}
+
+FUNCTION shutDownMachine {
+    Something went wrong so turn off machine
+}
+
+FUNCTION getSnackCode() {
+    counter = 0
+    snackCode = '' # empty string
+    validSnackCode = False
+    While validSnackcode is False
+        # the while statement above places the machine into a waiting state
+        for counter 0 to 3 {
+        # Handle a cancel
+            if cancel button is pressed {
+                reset count to 0 # Waiting state on machine
+                snackCode = ''
+                exit loop
+            }
+            # enter digit on keyboard and add the digit to the snackCode string
+            snackCode = snackCode + keyPressed
+            increment counter by 1 # language dependent
+        }
+
+        validSnackCode = checkSnackCode(snackCode)
+        if validSnackCode {
+            price = price(snackCode)
+            if receivePayment.paymentComplete {
+                snackVended = vendSnack(snackCode)
+                if !snackVended{
+                    returnChange = price + receivePayment.change
+                    shutdownMachine()
+                }
+            }
+            returnChange = receivePayment.change
+        }
+
+        validSnackCode = False
+    }
+}
+
+# when getSnackCode runs the machine will remain in a state where
+# it waits for a keypad selection to be made
+getSnackCode()
+
+
+#########################################################################
+# Pseudo code for Machine Owner
+# assumption - All of these processes are manual and there is no need
+# for coding
+#########################################################################
+
+FUNCTION unlockMachine{
+    manual process by owner
+}
+
+FUNCTION replenishStock{
+    for each shelf in machine not at capacity {
+        manually restock shelf
+    }
+}
+
+FUNCTION emptyCashBox{
+    manual process by owner to empty the cashbox
+}
+
+stockMachine {
+    unlockMachine()
+    replenishStock()
+    emptyCashBox()
+}
