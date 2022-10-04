@@ -87,6 +87,7 @@ FUNCTION getSnackCode() {
     }
 }
 
+# Start Here !!!
 # when getSnackCode runs the machine will remain in a state where
 # it waits for a keypad selection to be made
 getSnackCode()
@@ -98,22 +99,57 @@ getSnackCode()
 # for coding
 #########################################################################
 
-FUNCTION unlockMachine{
-    manual process by owner
+FUNCTION unlockMachine(type) {
+#     manual process by owner
+    Place key in keyslot and turn
+    if type = 'unlock' {
+        If the machine opens {
+                return true
+        } otherwise {
+                return false
+         }
+    }
+    if type = 'lock'   {
+        If the machine locks {
+            return true
+        } otherwise {
+            return false
+        }
+   }
 }
 
 FUNCTION replenishStock{
-    for each shelf in machine not at capacity {
-        manually restock shelf
+# TODO: would need to anticpate running out of stock which would return false
+# but many shelves would contain different stock
+    for each shelf in the machine {
+        if the current shelf is not full {
+            while the shelf is not full {
+                add one item to the shelf
+            }
+        }
     }
+    return
 }
 
 FUNCTION emptyCashBox{
-    manual process by owner to empty the cashbox
+#     manual process by owner to empty the cashbox
+    open cashbox
+    place coins in coin bag
+    replace cashbox
+    return
 }
 
+# Main Flow
 stockMachine {
-    unlockMachine()
-    replenishStock()
-    emptyCashBox()
+    # Unlock Machine, restock, empty cash box
+    if lockMachine(unlock) = True {
+        replenishStock()
+        emptyCashBox()
+    } otherwise { # Unable to open machine
+        call a locksmith
+    {
+    # lock machine. If unable to lock, call a locksmith
+    if lockmachine(lock) = False {
+        call a locksmith
+    }
 }
